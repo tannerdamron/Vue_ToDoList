@@ -1,30 +1,7 @@
-<template web>
-  <div class="w-page">
-    <div class="w-container">
-      <span>This is an about page</span>
-    </div>
+<template>
+  <div class="about">
+    <h1>About</h1>
+    <p>The To Do List app v1.0.0. It is part of the Vue Crash Course on YouTube</p>
+    <a href="https://www.youtube.com/watch?v=Wy9q22isx3U">Check out the tutorial here</a>
   </div>
 </template>
-<template native>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout>
-      <Label text="This is an about page" textWrap="true" horizontalAlignment="center" verticalAlignment="center"/>
-    </GridLayout>
-  </Page>
-</template>
-<script>
-
-  export default {
-    data() {
-      return {
-        navbarTitle: `About.vue`
-      };
-    }
-  };
-</script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  @import '~styles/style-two';
-  @import '~styles/style-one';
-</style>

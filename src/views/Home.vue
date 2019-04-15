@@ -1,50 +1,76 @@
 <template web>
-  <div class="w-page">
-    <div class="w-container">
-      <img src="~/assets/logo.png" alt="logo">
-      <HelloWorld :msg="msg"/>
-    </div>
+  <div id="app">
+    <AddTodo v-on:add-todo="addTodo" />
+    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo" />
   </div>
 </template>
-<template native>
-  <Page>
-    <ActionBar :title="navbarTitle"/>
-    <GridLayout rows="auto, auto">
-      <!-- copy-webpack-plugin copies asset from src/assets to project output/build directory /assets -->
-      <Image src="~/assets/logo.png" row="0" class="m-20"/>
-      <HelloWorld :msg="msg" row="1"/>
-    </GridLayout>
-  </Page>
-</template>
-<script>
-  import HelloWorld from 'components/HelloWorld';
 
-  const { VUE_APP_MODE, VUE_APP_PLATFORM } = process.env;
+<script>
+  import Todos from '../components/Todos';
+  import AddTodo from '../components/AddTodo';
+  import axios from 'axios';
 
   export default {
-    name: 'home',
+    name: 'Home',
     components: {
-      HelloWorld
+      AddTodo,
+      Todos
     },
     data() {
       return {
-        navbarTitle: `Home.vue`,
-        msg: `Mode=${VUE_APP_MODE} and Platform=${VUE_APP_PLATFORM}`
-      };
+        todos: []
+      }
+    },
+    methods: {
+      deleteTodo(id) {
+        axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
+        .catch(err => console.log(err));
+      },
+      addTodo(newTodo) {
+        const { title, completed } = newTodo;
+
+        axios.post('https://jsonplaceholder.typicode.com/todos', {
+          title,
+          completed
+        })
+          .then(res => this.todos = [...this.todos, res.data])
+          .catch(err => console.log(err));
+      }
+    },
+    // Use created like ngOnInit
+    created() {
+      axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+        .then(res => this.todos = res.data)
+        .catch(err => console.log(err));
     }
   };
-
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  @import '~styles/style-one';
-  @import '~styles/style-two';
 
-  img, Image {
-    height: 20%;
-    width: 20%;
-    display: block;
-    margin: auto;
-    margin-top: 4em;
+<style>
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.4;
+  }
+
+  .btn {
+    display: inline-block;
+    border: none;
+    background: #555;
+    color: #fff;
+    padding: 7px 20px;
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    background: #666;
+  }
+
 </style>
