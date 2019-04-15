@@ -21,6 +21,7 @@
     "setup-webpack-config": "node ./node_modules/vue-cli-plugin-nativescript-vue/lib/scripts/webpack-maintenance pre"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "nativescript-vue": "^2.2.0",
     "tns-core-modules": "^5.2.2",
